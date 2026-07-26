@@ -1,5 +1,5 @@
 from datetime import datetime
-from database import analysis_collection
+from mongodb import analysis_collection
 
 
 def save_analysis(result):

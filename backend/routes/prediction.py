@@ -3,7 +3,7 @@ import shutil
 import os
 from services.pdf_service import generate_report
 from services.image_service import predict_image
-from services.database_service import save_analysis
+from services.analysis_service import save_analysis
 router = APIRouter()
 
 UPLOAD_FOLDER = "../uploads"
