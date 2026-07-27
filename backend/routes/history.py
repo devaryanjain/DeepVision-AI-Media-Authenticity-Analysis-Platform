@@ -2,7 +2,8 @@ from fastapi import APIRouter, HTTPException
 
 from services.analysis_service import (
     get_all_analyses,
-    get_analysis_by_id
+    get_analysis_by_id,
+    delete_analysis
 )
 
 router = APIRouter(tags=["History"])
@@ -25,3 +26,18 @@ def get_analysis(analysis_id: str):
         )
 
     return analysis
+
+@router.delete("/history/{analysis_id}")
+def delete_analysis_route(analysis_id: str):
+
+    deleted = delete_analysis(analysis_id)
+
+    if deleted == 0:
+        raise HTTPException(
+            status_code=404,
+            detail="Analysis not found."
+        )
+
+    return {
+        "message": "Analysis deleted successfully."
+    }

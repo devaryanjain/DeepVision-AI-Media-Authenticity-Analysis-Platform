@@ -60,3 +60,14 @@ def get_analysis_by_id(analysis_id):
         "report_name": document["report_name"],
         "created_at": document["created_at"]
     }
+
+from bson import ObjectId
+
+
+def delete_analysis(analysis_id):
+
+    result = analysis_collection.delete_one(
+        {"_id": ObjectId(analysis_id)}
+    )
+
+    return result.deleted_count
