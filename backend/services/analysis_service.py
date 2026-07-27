@@ -38,3 +38,25 @@ def get_all_analyses():
         })
 
     return analyses
+
+from bson import ObjectId
+
+
+def get_analysis_by_id(analysis_id):
+
+    document = analysis_collection.find_one(
+        {"_id": ObjectId(analysis_id)}
+    )
+
+    if document is None:
+        return None
+
+    return {
+        "analysis_id": str(document["_id"]),
+        "prediction": document["prediction"],
+        "confidence": document["confidence"],
+        "sha256": document["sha256"],
+        "metadata": document["metadata"],
+        "report_name": document["report_name"],
+        "created_at": document["created_at"]
+    }
