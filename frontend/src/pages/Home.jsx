@@ -1,7 +1,23 @@
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
+import Hero from "../components/home/Hero";
+import Stats from "../components/home/Stats";
+import FeatureSection from "../components/home/FeatureSection";
+
 function Home() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-950 text-white">
-      <h1 className="text-5xl font-bold">Home Page</h1>
+    <div className="min-h-screen bg-slate-950 text-white">
+
+      <Navbar />
+
+      <Hero />
+
+      <Stats />
+
+      <FeatureSection />
+
+      <Footer />
+
     </div>
   );
 }
