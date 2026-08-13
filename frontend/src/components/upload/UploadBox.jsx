@@ -9,62 +9,102 @@ function UploadBox() {
   const inputRef = useRef();
 
   const [image, setImage] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
 
-  function handleSelect(e) {
-    const file = e.target.files[0];
+  function validateFile(file) {
+    if (!file) return false;
 
-    if (!file) return;
-
-    // Validate image type
     if (!file.type.startsWith("image/")) {
       toast.error("Please select a valid image.");
-      return;
+      return false;
     }
 
-    // Validate size (10 MB)
     if (file.size > 10 * 1024 * 1024) {
-      toast.error("Image size should be less than 10 MB.");
-      return;
+      toast.error("Image size must be less than 10 MB.");
+      return false;
     }
+
+    return true;
+  }
+
+  function selectFile(file) {
+    if (!validateFile(file)) return;
 
     setImage(file);
     toast.success("Image selected successfully!");
+  }
+
+  function handleSelect(event) {
+    selectFile(event.target.files[0]);
+  }
+
+  function handleDragOver(event) {
+    event.preventDefault();
+    setIsDragging(true);
+  }
+
+  function handleDragLeave(event) {
+    event.preventDefault();
+    setIsDragging(false);
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    setIsDragging(false);
+
+    const file = event.dataTransfer.files[0];
+
+    selectFile(file);
   }
 
   return (
     <>
       <div
         onClick={() => inputRef.current.click()}
-        className="
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+        className={`
           border-2
           border-dashed
-          border-cyan-500
           rounded-3xl
           p-16
           text-center
-          bg-slate-900
-          hover:bg-slate-800
+          cursor-pointer
           transition-all
           duration-300
-          cursor-pointer
-          hover:scale-[1.01]
-        "
+          ${
+            isDragging
+              ? "border-cyan-400 bg-cyan-500/10 scale-[1.02]"
+              : "border-cyan-500 bg-slate-900 hover:bg-slate-800"
+          }
+        `}
       >
         <UploadCloud
           size={72}
-          className="mx-auto text-cyan-400 mb-6"
+          className={`mx-auto mb-6 transition ${
+            isDragging ? "text-cyan-300 scale-110" : "text-cyan-400"
+          }`}
         />
 
         <h2 className="text-3xl font-bold mb-4">
-          Drag & Drop Your Image
+          {isDragging
+            ? "Drop Your Image Here"
+            : "Drag & Drop Your Image"}
         </h2>
 
         <p className="text-slate-400 mb-8">
-          Click anywhere to browse your files
+          {isDragging
+            ? "Release to select the image"
+            : "or click to browse files"}
         </p>
 
         <button
           type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            inputRef.current.click();
+          }}
           className="
             inline-flex
             items-center
@@ -91,7 +131,7 @@ function UploadBox() {
         />
 
         <p className="mt-8 text-sm text-slate-500">
-          Supported formats: JPG, JPEG, PNG (Max 10 MB)
+          JPG, JPEG, PNG • Maximum 10 MB
         </p>
       </div>
 
