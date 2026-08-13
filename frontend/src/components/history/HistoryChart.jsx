@@ -4,11 +4,17 @@ import {
   Cell,
   Tooltip,
   ResponsiveContainer,
+  Legend,
 } from "recharts";
 
-function HistoryChart({ data }) {
-  const real = data.filter((item) => item.prediction === "REAL").length;
-  const fake = data.filter((item) => item.prediction === "FAKE").length;
+function HistoryChart({ history = [] }) {
+  const real = history.filter(
+    (item) => item.prediction?.toUpperCase() === "REAL"
+  ).length;
+
+  const fake = history.filter(
+    (item) => item.prediction?.toUpperCase() === "FAKE"
+  ).length;
 
   const chartData = [
     {
@@ -24,40 +30,58 @@ function HistoryChart({ data }) {
   const COLORS = ["#22c55e", "#ef4444"];
 
   return (
-    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-8 mb-10">
+    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-8">
 
-      <h2 className="text-2xl font-bold mb-6">
-        Detection Distribution
-      </h2>
+      <div className="mb-6">
+        <p className="text-cyan-400 text-sm font-semibold tracking-widest uppercase mb-2">
+          Analytics
+        </p>
+
+        <h2 className="text-2xl font-bold">
+          Detection Distribution
+        </h2>
+
+        <p className="text-slate-500 text-sm mt-2">
+          Overview of real and manipulated images detected by the system.
+        </p>
+      </div>
 
       <div className="h-80">
 
-        <ResponsiveContainer>
-
+        <ResponsiveContainer width="100%" height="100%">
           <PieChart>
 
             <Pie
               data={chartData}
               dataKey="value"
-              outerRadius={120}
+              nameKey="name"
+              cx="50%"
+              cy="50%"
+              outerRadius={105}
+              innerRadius={55}
+              paddingAngle={3}
               label
             >
-
               {chartData.map((entry, index) => (
-
                 <Cell
-                  key={index}
+                  key={entry.name}
                   fill={COLORS[index]}
                 />
-
               ))}
-
             </Pie>
 
-            <Tooltip />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "#0f172a",
+                border: "1px solid #334155",
+                borderRadius: "10px",
+                color: "#fff",
+              }}
+            />
+
+            <Legend />
 
           </PieChart>
-
         </ResponsiveContainer>
 
       </div>
