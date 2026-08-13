@@ -8,7 +8,7 @@ function Upload() {
 
       <Navbar />
 
-      <section className="max-w-5xl mx-auto px-6 py-20">
+      <main className="max-w-5xl mx-auto px-6 py-20 flex-1">
 
         <h1 className="text-5xl font-bold text-center mb-4">
           Upload Image
@@ -20,7 +20,7 @@ function Upload() {
 
         <UploadBox />
 
-      </section>
+      </main>
 
       <Footer />
 

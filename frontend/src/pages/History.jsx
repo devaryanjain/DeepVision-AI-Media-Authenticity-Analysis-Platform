@@ -8,6 +8,7 @@ import HistoryCard from "../components/history/HistoryCard";
 import SearchBar from "../components/history/SearchBar";
 import EmptyHistory from "../components/history/EmptyHistory";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import HistoryChart from "../components/history/HistoryChart";
 
 function History() {
   const [history, setHistory] = useState([]);
@@ -41,7 +42,9 @@ function History() {
     setFiltered(result);
   }
 
-  if (loading) return <LoadingSpinner />;
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col">
@@ -55,6 +58,8 @@ function History() {
         </h1>
 
         <SearchBar onSearch={handleSearch} />
+
+        <HistoryChart data={filtered} />
 
         {filtered.length === 0 ? (
           <EmptyHistory />
