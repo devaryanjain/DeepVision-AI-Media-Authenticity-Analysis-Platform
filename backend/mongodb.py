@@ -1,10 +1,17 @@
+import os
+
+from dotenv import load_dotenv
 from pymongo import MongoClient
 
-# Connect to local MongoDB
-client = MongoClient("mongodb://localhost:27017")
+load_dotenv()
 
-# Database
+MONGODB_URI = os.getenv("MONGODB_URI")
+
+if not MONGODB_URI:
+    raise RuntimeError("MONGODB_URI is not set")
+
+client = MongoClient(MONGODB_URI)
+
 db = client["deepvision_ai"]
 
-# Collection
 analysis_collection = db["analysis_history"]

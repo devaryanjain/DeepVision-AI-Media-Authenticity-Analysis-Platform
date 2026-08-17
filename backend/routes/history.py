@@ -27,6 +27,7 @@ def get_analysis(analysis_id: str):
 
     return analysis
 
+
 @router.delete("/history/{analysis_id}")
 def delete_analysis_route(analysis_id: str):
 
