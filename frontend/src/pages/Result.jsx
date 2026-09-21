@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-
+import api from "../services/api";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
 
@@ -55,6 +55,11 @@ function Result() {
   }
 
   const isFake = state.prediction?.toUpperCase() === "FAKE";
+  const gradcamUrl = state.gradcam_url
+  ? state.gradcam_url.startsWith("http")
+    ? state.gradcam_url
+    : `${api.defaults.baseURL}${state.gradcam_url}`
+  : null;
 
   return (
     <div className="min-h-screen bg-slate-950 text-white flex flex-col">
@@ -149,7 +154,58 @@ function Result() {
 
             </div>
           </div>
+          {/* AI Explanation - Grad-CAM */}
+{gradcamUrl && (
+  <div className="mb-8">
+    <div className="
+      bg-slate-900
+      rounded-3xl
+      p-8
+      border
+      border-slate-800
+    ">
+      <div className="mb-6">
+        <p className="text-cyan-400 text-sm font-semibold tracking-widest uppercase mb-2">
+          AI Explainability
+        </p>
 
+        <h3 className="text-2xl font-bold">
+          Grad-CAM Analysis
+        </h3>
+
+        <p className="text-slate-400 mt-2">
+          Highlighted regions show the areas that contributed most
+          to the AI model's prediction.
+        </p>
+      </div>
+
+      <div className="rounded-2xl overflow-hidden border border-slate-800 bg-slate-950">
+        <img
+          src={gradcamUrl}
+          alt="Grad-CAM explanation showing regions influencing the AI prediction"
+          className="w-full max-h-[600px] object-contain"
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-4 mt-5 text-sm text-slate-400">
+        <span className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-red-500"></span>
+          Stronger model attention
+        </span>
+
+        <span className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-yellow-400"></span>
+          Moderate attention
+        </span>
+
+        <span className="flex items-center gap-2">
+          <span className="w-3 h-3 rounded-full bg-blue-500"></span>
+          Lower attention
+        </span>
+      </div>
+    </div>
+  </div>
+)}
           {/* Metadata */}
           <div className="mb-8">
             <MetadataCard

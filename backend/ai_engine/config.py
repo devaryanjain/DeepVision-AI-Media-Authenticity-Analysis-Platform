@@ -4,7 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent
 
 # Trained model
-MODEL_PATH = BASE_DIR / "weights" / "best_model-v3.pt"
+MODEL_PATH = BASE_DIR / "weights" / "best_model-v4.pt"
 
 # Image size
 IMAGE_SIZE = (224, 224)

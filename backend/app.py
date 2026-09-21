@@ -24,6 +24,8 @@ app.add_middleware(
 
 # Serve generated PDF reports
 app.mount("/reports", StaticFiles(directory="../reports"), name="reports")
+# Serve uploaded images and Grad-CAM overlays
+app.mount("/uploads", StaticFiles(directory="../uploads"), name="uploads")
 
 @app.get("/")
 def home():
